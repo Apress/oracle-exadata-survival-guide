@@ -1,0 +1,74 @@
+#################################################################
+# Oracle sid selection script
+#
+# 13-May-2012 - Mary Mikell Spence
+#               Infocrossing
+#################################################################
+
+ORASID=$ORACLE_SID
+
+if [ -f /etc/oratab ]
+then
+   export ORATAB=/etc/oratab
+else
+   export ORATAB=/var/opt/oracle/oratab
+fi
+
+
+unset ORACLE_BASE
+
+echo;
+I=1
+for SHOW_DB in `cat $ORATAB | grep -v "#" |  grep -v '*' | cut -f 1 -d :`
+do
+   OHOME=`grep -v '#' $ORATAB | grep -v '*' | grep "^$SHOW_DB:" | cut -d: -f 2`
+   echo "$I - $SHOW_DB - $OHOME"
+   I=`expr $I + 1`
+done
+echo;
+
+GOOD_NAME=false
+while [ "${GOOD_NAME}" = "false" ]
+do
+  echo "Enter selection by # or name [$ORASID]: "
+  read CHOICE
+  if [ "$CHOICE" = "" ]
+  then
+    GOOD_NAME=true
+    CHOICE=$ORASID
+  else
+    I=1
+    for DB_NAME in `cat $ORATAB | grep -v "#" |  grep -v '*' | cut -f 1 -d :`
+    do
+      if [ "$DB_NAME" = "$CHOICE" -o "$I" = "$CHOICE" ]
+      then
+        GOOD_NAME=true
+        CHOICE=$DB_NAME
+      fi
+      I=`expr $I + 1`
+    done
+  fi
+done
+
+ORAENV_ASK=NO
+ORACLE_SID=$CHOICE
+
+. oraenv > /dev/null
+
+echo; echo;
+echo "*************************************************"
+echo "ORACLE_BASE...$ORACLE_BASE"
+echo "ORACLE_HOME...$ORACLE_HOME"
+echo "ORACLE_SID....$ORACLE_SID"
+echo "*************************************************"
+echo;
+
+unset ORATAB
+unset GOOD_NAME
+unset I
+unset SHOW_DB
+unset CHOICE
+unset DB_NAME
+unset OHOME
+unset ORASID
+

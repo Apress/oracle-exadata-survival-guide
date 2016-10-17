@@ -1,0 +1,663 @@
+SQL> 
+SQL> create table chicken_hr_tab(
+  2  	     chicken_id      number not null,
+  3  	     chicken_name    varchar2(20),
+  4  	     talent_cd	     number not null,
+  5  	     retired	     varchar2(3),
+  6  	     retire_dt	     date,
+  7  	     suitable_for_frying varchar2(3),
+  8  	     fry_dt	     date
+  9  ) parallel (degree 4) tablespace users;
+
+Table created.
+
+Elapsed: 00:00:00.05
+SQL> 
+SQL> create table chicken_hr_tab2(
+  2  	     chicken_id      number not null,
+  3  	     chicken_name    varchar2(20),
+  4  	     talent_cd	     number not null,
+  5  	     retired	     varchar2(3),
+  6  	     retire_dt	     date,
+  7  	     suitable_for_frying varchar2(3),
+  8  	     fry_dt	     date
+  9  ) parallel (degree 4) tablespace users;
+
+Table created.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> create table chicken_talent_tab(
+  2  	     talent_cd	     number not null,
+  3  	     talent	     varchar2(40)
+  4  ) parallel (degree 4) tablespace users;
+
+Table created.
+
+Elapsed: 00:00:00.01
+SQL> 
+SQL> create sequence chick_id_seq start with 1 increment by 1 nomaxvalue nocycle noorder;
+
+Sequence created.
+
+Elapsed: 00:00:00.01
+SQL> 
+SQL> create or replace trigger chick_id_trg
+  2  before insert on chicken_hr_tab
+  3  for each row
+  4  begin
+  5  	     :new.chicken_id := chick_id_seq.nextval;
+  6  end;
+  7  /
+
+Trigger created.
+
+Elapsed: 00:00:00.02
+SQL> 
+SQL> create or replace trigger chick_id2_trg
+  2  before insert on chicken_hr_tab2
+  3  for each row
+  4  begin
+  5  	     :new.chicken_id := chick_id_seq.nextval;
+  6  end;
+  7  /
+
+Trigger created.
+
+Elapsed: 00:00:00.01
+SQL> 
+SQL> insert all
+  2  into chicken_talent_tab
+  3  values(1, 'Paint Stripper')
+  4  into chicken_talent_tab
+  5  values(2, 'Tap Dancer')
+  6  into chicken_talent_tab
+  7  values(3, 'Medic')
+  8  into chicken_talent_tab
+  9  values(4, 'Pole Vaulter')
+ 10  into chicken_talent_tab
+ 11  values(5, 'Accountant')
+ 12  select * from dual;
+
+5 rows created.
+
+Elapsed: 00:00:00.01
+SQL> 
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> insert all
+  2  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  values ('Peaches',4,'No',null,'No',null)
+  4  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  5  values ('Flower',4,'No',null,'No',null)
+  6  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  7  values ('Eunice',1,'No',null,'Yes',sysdate+20)
+  8  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  9  values ('Ginger',1,'No',null,'No',null)
+ 10  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 11  values ('Red',2,'No',null,'No',null)
+ 12  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 13  values ('Melony',1,'No',null,'No',null)
+ 14  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 15  values ('Maude',1,'No',null,'No',null)
+ 16  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 17  values ('Fran',1,'No',null,'Yes',sysdate-3)
+ 18  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 19  values ('Fern',2,'No',null,'No',null)
+ 20  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 21  values ('Amanda',1,'Yes',sysdate-1,'No',null)
+ 22  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 23  values ('Colleen',4,'No',null,'No',null)
+ 24  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 25  values ('Peggy',2,'No',null,'No',null)
+ 26  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 27  values ('Danni',1,'No',null,'No',null)
+ 28  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 29  values ('Martha',4,'No',null,'No',null)
+ 30  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 31  values ('Dolly',4,'No',null,'No',null)
+ 32  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 33  values ('Periwinkle',1,'No',null,'No',null)
+ 34  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 35  values ('Uma',1,'No',null,'No',null)
+ 36  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 37  values ('Amanda',2,'No',null,'No',null)
+ 38  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 39  values ('Florence',3,'No',null,'No',null)
+ 40  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 41  values ('Pickles',1,'No',null,null,sysdate+12)
+ 42  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 43  values ('Pepper',1,'No',null,'No',null)
+ 44  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 45  values ('Frieda',4,'No',null,null,sysdate+30)
+ 46  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 47  values ('Terri',1,'No',null,'No',null)
+ 48  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 49  values ('Cloris',1,'No',null,'No',null)
+ 50  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 51  values ('Terry',1,'No',null,'No',null)
+ 52  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 53  values ('Snookums',4,'No',null,'No',null)
+ 54  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 55  values ('Margot',2,'No',null,'No',null)
+ 56  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 57  values ('Lois',1,'No',null,'No',null)
+ 58  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 59  values ('Lola',1,'No',null,'No',null)
+ 60  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 61  values ('Beulah',1,'No',null,'No',null)
+ 62  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 63  values ('Merle',1,'No',null,'No',null)
+ 64  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 65  values ('Stava',1,'No',null,'No',null)
+ 66  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 67  values ('Stephanie',2,'No',null,'No',null)
+ 68  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 69  values ('Edie',2,'No',null,'Yes',sysdate+30)
+ 70  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 71  values ('Calcutta',4,'No',null,'No',null)
+ 72  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 73  values ('Jane',1,'No',null,'No',null)
+ 74  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 75  values ('Crystal',1,'No',null,'No',null)
+ 76  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 77  values ('Loretta',1,'No',null,'No',null)
+ 78  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 79  values ('Monica',2,'No',null,'No',null)
+ 80  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 81  values ('Jennifer',1,'No',null,'No',null)
+ 82  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 83  values ('Julia',1,'No',null,'No',null)
+ 84  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 85  values ('Ruth',1,'No',null,'No',null)
+ 86  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 87  values ('Eva',2,'No',null,'No',null)
+ 88  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 89  values ('Marie',1,'No',null,'No',null)
+ 90  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 91  values ('Constance',1,'No',null,'No',null)
+ 92  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 93  values ('Leone',1,'No',null,'No',null)
+ 94  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 95  values ('Leona',1,'No',null,'No',null)
+ 96  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 97  values ('Dana',2,'No',null,'No',null)
+ 98  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 99  values ('Luba',1,'No',null,'No',null)
+100  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+101  values ('Rachel',1,'No',null,'No',null)
+102  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+103  values ('Sarah',1,'No',null,'No',null)
+104  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+105  values ('Amy',1,'No',null,'No',null)
+106  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+107  values ('Rebecca',1,'No',null,'No',null)
+108  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+109  values ('Cat',5,'No',null,'No',null)
+110  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+111  values ('Katy',1,'No',null,'No',null)
+112  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+113  values ('Scarlett',4,'No',null,'No',null)
+114  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+115  values ('Ashley',1,'No',null,'No',null)
+116  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+117  values ('Belle',1,'No',null,'No',null)
+118  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+119  values ('Delle',1,'No',null,'No',null)
+120  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+121  values ('Delilah',1,'No',null,'No',null)
+122  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+123  values ('Mary',1,'No',null,'No',null)
+124  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+125  values ('Margaret',1,'No',null,'No',null)
+126  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+127  values ('Lucy',1,'No',null,'No',null)
+128  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+129  values ('Rona',1,'No',null,'No',null)
+130  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+131  values ('Reese',1,'No',null,'No',null)
+132  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+133  values ('Agnes',2,'No',null,'No',null)
+134  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+135  values ('Donna',1,'No',null,'No',null)
+136  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+137  values ('Melissa',1,'No',null,'No',null)
+138  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+139  values ('Melba',1,'No',null,'No',null)
+140  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+141  values ('Hazel',1,'No',null,'No',null)
+142  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+143  values ('Phyllis',1,'No',null,'No',null)
+144  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+145  values ('Matilda',1,'No',null,'No',null)
+146  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+147  values ('Rhonda',2,'No',null,'No',null)
+148  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+149  values ('Vicki',1,'No',null,'No',null)
+150  select * from dual;
+
+74 rows created.
+
+Elapsed: 00:00:00.12
+SQL> 
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> alter session set "_serial_direct_read"=true;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> begin
+  2  	     for i in 1..19 loop
+  3  		     insert /*+ append */
+  4  		     into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  5  		     select
+  6  		     chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  7  		     where talent_cd in (3,5);
+  8  		     commit;
+  9  		     insert /*+ append */
+ 10  		     into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 11  		     select
+ 12  		     chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+ 13  		     where talent_cd not in (3,5);
+ 14  		     commit;
+ 15  	     end loop;
+ 16  
+ 17  	     commit;
+ 18  
+ 19  end;
+ 20  /
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:39:36.42
+SQL> 
+SQL> insert /*+ append */
+  2  into chicken_hr_tab (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  select
+  4  chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  5  where talent_cd in (3,5);
+
+1048576 rows created.
+
+Elapsed: 00:01:05.10
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.01
+SQL> insert /*+ append */
+  2  into chicken_hr_tab (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  select
+  4  chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  5  where talent_cd not in (3,5);
+
+37748736 rows created.
+
+Elapsed: 00:38:09.12
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> exec dbms_stats.gather_table_stats(user, 'CHICKEN_TALENT_TAB', cascade=>true, estimate_percent=>null);
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.46
+SQL> exec dbms_stats.gather_table_stats(user, 'CHICKEN_HR_TAB', cascade=>true, estimate_percent=>null);
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:31.66
+SQL> 
+SQL> set timing on
+SQL> 
+SQL> connect bing/bong0$tar
+Connected.
+SQL> alter session set parallel_force_local=true;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> alter session set parallel_min_time_threshold=2;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> alter session set parallel_degree_policy=manual;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> 
+SQL> set timing on
+SQL> 
+SQL> select /*+ parallel(4) */
+  2  chicken_id
+  3  from chicken_hr_tab
+  4  where talent_cd = 4;
+
+     CHICKEN_ID
+---------------
+       60277401
+       60277404
+...
+       72320593
+       72320597
+       72320606
+       72320626
+
+4718592 rows selected.
+
+Elapsed: 00:03:17.92
+SQL> 
+SQL> select *
+  2  from v$mystat
+  3  where statistic# = (select statistic# from v$statname where name = 'cell physical IO bytes saved by storage index');
+
+            SID      STATISTIC#           VALUE
+--------------- --------------- ---------------
+            915             247               0
+
+Elapsed: 00:00:00.01
+SQL> 
+SQL> truncate table chicken_hr_tab;
+
+Table truncated.
+
+Elapsed: 00:00:00.14
+SQL> truncate table chicken_hr_tab2;
+
+Table truncated.
+
+Elapsed: 00:00:01.06
+SQL> 
+SQL> insert all
+  2  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  values ('Peaches',4,'No',null,'No',null)
+  4  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  5  values ('Flower',4,'No',null,'No',null)
+  6  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  7  values ('Eunice',1,'No',null,'Yes',sysdate+20)
+  8  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  9  values ('Ginger',1,'No',null,'No',null)
+ 10  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 11  values ('Red',2,'No',null,'No',null)
+ 12  into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 13  values ('Melony',1,'No',null,'No',null)
+ 14  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 15  values ('Maude',1,'No',null,'No',null)
+ 16  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 17  values ('Fran',1,'No',null,'Yes',sysdate-3)
+ 18  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 19  values ('Fern',2,'No',null,'No',null)
+ 20  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 21  values ('Amanda',1,'Yes',sysdate-1,'No',null)
+ 22  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 23  values ('Colleen',4,'No',null,'No',null)
+ 24  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 25  values ('Peggy',2,'No',null,'No',null)
+ 26  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 27  values ('Danni',1,'No',null,'No',null)
+ 28  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 29  values ('Martha',4,'No',null,'No',null)
+ 30  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 31  values ('Dolly',4,'No',null,'No',null)
+ 32  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 33  values ('Periwinkle',1,'No',null,'No',null)
+ 34  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 35  values ('Uma',1,'No',null,'No',null)
+ 36  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 37  values ('Amanda',2,'No',null,'No',null)
+ 38  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 39  values ('Florence',3,'No',null,'No',null)
+ 40  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 41  values ('Pickles',1,'No',null,null,sysdate+12)
+ 42  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 43  values ('Pepper',1,'No',null,'No',null)
+ 44  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 45  values ('Frieda',4,'No',null,null,sysdate+30)
+ 46  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 47  values ('Terri',1,'No',null,'No',null)
+ 48  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 49  values ('Cloris',1,'No',null,'No',null)
+ 50  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 51  values ('Terry',1,'No',null,'No',null)
+ 52  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 53  values ('Snookums',4,'No',null,'No',null)
+ 54  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 55  values ('Margot',2,'No',null,'No',null)
+ 56  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 57  values ('Lois',1,'No',null,'No',null)
+ 58  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 59  values ('Lola',1,'No',null,'No',null)
+ 60  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 61  values ('Beulah',1,'No',null,'No',null)
+ 62  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 63  values ('Merle',1,'No',null,'No',null)
+ 64  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 65  values ('Stava',1,'No',null,'No',null)
+ 66  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 67  values ('Stephanie',2,'No',null,'No',null)
+ 68  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 69  values ('Edie',2,'No',null,'Yes',sysdate+30)
+ 70  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 71  values ('Calcutta',4,'No',null,'No',null)
+ 72  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 73  values ('Jane',1,'No',null,'No',null)
+ 74  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 75  values ('Crystal',1,'No',null,'No',null)
+ 76  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 77  values ('Loretta',1,'No',null,'No',null)
+ 78  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 79  values ('Monica',2,'No',null,'No',null)
+ 80  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 81  values ('Jennifer',1,'No',null,'No',null)
+ 82  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 83  values ('Julia',1,'No',null,'No',null)
+ 84  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 85  values ('Ruth',1,'No',null,'No',null)
+ 86  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 87  values ('Eva',2,'No',null,'No',null)
+ 88  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 89  values ('Marie',1,'No',null,'No',null)
+ 90  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 91  values ('Constance',1,'No',null,'No',null)
+ 92  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 93  values ('Leone',1,'No',null,'No',null)
+ 94  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 95  values ('Leona',1,'No',null,'No',null)
+ 96  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 97  values ('Dana',2,'No',null,'No',null)
+ 98  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 99  values ('Luba',1,'No',null,'No',null)
+100  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+101  values ('Rachel',1,'No',null,'No',null)
+102  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+103  values ('Sarah',1,'No',null,'No',null)
+104  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+105  values ('Amy',1,'No',null,'No',null)
+106  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+107  values ('Rebecca',1,'No',null,'No',null)
+108  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+109  values ('Cat',5,'No',null,'No',null)
+110  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+111  values ('Katy',1,'No',null,'No',null)
+112  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+113  values ('Scarlett',4,'No',null,'No',null)
+114  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+115  values ('Ashley',1,'No',null,'No',null)
+116  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+117  values ('Belle',1,'No',null,'No',null)
+118  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+119  values ('Delle',1,'No',null,'No',null)
+120  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+121  values ('Delilah',1,'No',null,'No',null)
+122  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+123  values ('Mary',1,'No',null,'No',null)
+124  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+125  values ('Margaret',1,'No',null,'No',null)
+126  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+127  values ('Lucy',1,'No',null,'No',null)
+128  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+129  values ('Rona',1,'No',null,'No',null)
+130  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+131  values ('Reese',1,'No',null,'No',null)
+132  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+133  values ('Agnes',2,'No',null,'No',null)
+134  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+135  values ('Donna',1,'No',null,'No',null)
+136  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+137  values ('Melissa',1,'No',null,'No',null)
+138  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+139  values ('Melba',1,'No',null,'No',null)
+140  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+141  values ('Hazel',1,'No',null,'No',null)
+142  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+143  values ('Phyllis',1,'No',null,'No',null)
+144  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+145  values ('Matilda',1,'No',null,'No',null)
+146  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+147  values ('Rhonda',2,'No',null,'No',null)
+148  into chicken_hr_tab2(chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+149  values ('Vicki',1,'No',null,'No',null)
+150  select * from dual;
+
+74 rows created.
+
+Elapsed: 00:00:00.06
+SQL> 
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> alter session set "_serial_direct_read"=true;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> begin
+  2  	     for i in 1..19 loop
+  3  		     insert /*+ append */
+  4  		     into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  5  		     select
+  6  		     chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  7  		     where talent_cd in (3,4,5);
+  8  		     commit;
+  9  		     insert /*+ append */
+ 10  		     into chicken_hr_tab2 (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+ 11  		     select
+ 12  		     chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+ 13  		     where talent_cd not in (3,4,5);
+ 14  		     commit;
+ 15  	     end loop;
+ 16  
+ 17  	     commit;
+ 18  
+ 19  end;
+ 20  /
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:39:18.13
+SQL> 
+SQL> insert /*+ append */
+  2  into chicken_hr_tab (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  select
+  4  chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  5  where talent_cd in (3,4,5);
+
+5767168 rows created.
+
+Elapsed: 00:05:50.80
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> insert /*+ append */
+  2  into chicken_hr_tab (chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt)
+  3  select
+  4  chicken_name, talent_cd, retired, retire_dt, suitable_for_frying, fry_dt from chicken_hr_tab2
+  5  where talent_cd not in (3,4,5);
+
+33030144 rows created.
+
+Elapsed: 00:33:24.90
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> exec dbms_stats.gather_table_stats(user, 'CHICKEN_HR_TAB', cascade=>true, estimate_percent=>null);
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:54.07
+SQL> 
+SQL> connect bing/bong0$tar
+Connected.
+SQL> alter session set parallel_force_local=true;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> alter session set parallel_min_time_threshold=2;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> alter session set parallel_degree_policy=manual;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> set timing on
+SQL> 
+SQL> select /*+ parallel(4) */
+  2  chicken_id
+  3  from chicken_hr_tab
+  4  where talent_cd = 4;
+
+     CHICKEN_ID
+---------------
+      116602793
+      116602795
+...
+      117775379
+      117775380
+      117775381
+      117775383
+
+4718592 rows selected.
+
+Elapsed: 00:03:09.15
+SQL> 
+SQL> select *
+  2  from v$mystat
+  3  where statistic# = (select statistic# from v$statname where name = 'cell physical IO bytes saved by storage index');
+
+            SID      STATISTIC#           VALUE
+--------------- --------------- ---------------
+            915             247               0
+
+Elapsed: 00:00:00.00
+SQL> 
+SQL> spool off
